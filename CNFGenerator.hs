@@ -14,9 +14,13 @@ newtype Var     = V Int
 -- c is the number of clauses to include in the problem
 -- r is the number of variables per clause
 generateProblem :: Int -> Int -> Int -> Problem
+generateProblem v c r = P [C [Positive (V 1)]]
 
 generateClause :: Int -> Int -> Clause
+generateClause v r = C [Positive (V 1)]
 
 generateLiteral :: Int -> Literal
+generateLiteral v = Positive (V 1)
 
 generateVariable :: Int -> Var
+generateVariable v = V 1
