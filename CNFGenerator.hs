@@ -8,3 +8,15 @@ newtype Problem = P [Clause]
 newtype Clause  = C [Literal]
 data    Literal = Positive Var | Negative Var
 newtype Var     = V Int
+
+-- Generator
+-- v is the number of variables to include in the problem
+-- c is the number of clauses to include in the problem
+-- r is the number of variables per clause
+generateProblem :: Int -> Int -> Int -> Problem
+
+generateClause :: Int -> Int -> Clause
+
+generateLiteral :: Int -> Literal
+
+generateVariable :: Int -> Var
