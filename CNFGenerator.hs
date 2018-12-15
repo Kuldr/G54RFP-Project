@@ -1,3 +1,5 @@
+module CNFGenerator where
+
 import System.Random
 import Control.Monad
 
@@ -20,19 +22,16 @@ generateProblem :: Int -> Int -> Int -> IO Problem
 generateProblem v c r = do
                             clauses <- replicateM c (generateClause v r)
                             return $ P clauses
-
 generateClause :: Int -> Int -> IO Clause
 generateClause v r = do
                         literals <- replicateM r (generateLiteral v)
                         return $ C literals
-
 generateLiteral :: Int -> IO Literal
 generateLiteral v = do
                         randomBool <- randomRIO (True, False)
                         variable   <- generateVariable v
                         if randomBool then return $ Positive variable
                                       else return $ Negative variable
-
 generateVariable :: Int -> IO Var
 generateVariable v = do
                         randomVar <- randomRIO (1,v+1)
