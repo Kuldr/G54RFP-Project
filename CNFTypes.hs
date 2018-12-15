@@ -10,3 +10,5 @@ newtype Problem = P [Clause] deriving (Show)
 newtype Clause  = C [Literal] deriving (Show)
 data    Literal = Positive Var | Negative Var deriving (Show)
 newtype Var     = V Int deriving (Show)
+
+newtype Solution = S [(Int, Bool)] deriving (Show)
