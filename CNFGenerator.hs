@@ -24,5 +24,5 @@ generateLiteral v = do
                                       else return $ Negative variable
 generateVariable :: Int -> IO Var
 generateVariable v = do
-                        randomVar <- randomRIO (1,v+1)
+                        randomVar <- randomRIO (1,v)
                         return $ V randomVar
