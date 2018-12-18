@@ -58,3 +58,4 @@ displayTable v c r t =
         putStrLn $ "All True  | " ++ show ((\(x,_,_) -> x) averageResults)
         putStrLn $ "All False | " ++ show ((\(_,x,_) -> x) averageResults)
         putStrLn $ "Random    | " ++ show ((\(_,_,x) -> x) averageResults)
+        putStrLn ""
