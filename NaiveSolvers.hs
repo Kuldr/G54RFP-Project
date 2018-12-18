@@ -1,3 +1,5 @@
+module NaiveSolvers where
+
 import System.Random
 import Control.Monad
 import CNFTypes
