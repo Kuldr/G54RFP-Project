@@ -22,3 +22,11 @@ generateAndEvaluate v c r =
 
         -- Return results
         return (allTrueResult, allFalseResult, randomResult)
+
+solveMultiple :: Int -> Int -> Int -> Int -> IO [(Int, Int, Int)]
+solveMultiple v c r 0 = do return []
+solveMultiple v c r t =
+    do
+        result <- generateAndEvaluate v c r
+        results <- solveMultiple v c r (t-1)
+        return $ result : results
