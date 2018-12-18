@@ -30,3 +30,11 @@ solveMultiple v c r t =
         result <- generateAndEvaluate v c r
         results <- solveMultiple v c r (t-1)
         return $ result : results
+
+averageResult :: [(Int, Int, Int)] -> (Double, Double, Double)
+averageResult rs = (trueTotal/n, falseTotal/n, randomTotal/n)
+                    where
+                        trueTotal   = fromIntegral $ sum [(\(x,_,_) -> x) $ x | x <- rs]
+                        falseTotal  = fromIntegral $ sum [(\(_,x,_) -> x) x | x <- rs]
+                        randomTotal = fromIntegral $ sum [(\(_,_,x) -> x) x | x <- rs]
+                        n = fromIntegral $ length rs
