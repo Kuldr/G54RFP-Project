@@ -34,7 +34,7 @@ solveMultiple v c r t =
 averageResult :: [(Int, Int, Int)] -> (Double, Double, Double)
 averageResult rs = (trueTotal/n, falseTotal/n, randomTotal/n)
                     where
-                        trueTotal   = fromIntegral $ sum [(\(x,_,_) -> x) $ x | x <- rs]
+                        trueTotal   = fromIntegral $ sum [(\(x,_,_) -> x) x | x <- rs]
                         falseTotal  = fromIntegral $ sum [(\(_,x,_) -> x) x | x <- rs]
                         randomTotal = fromIntegral $ sum [(\(_,_,x) -> x) x | x <- rs]
                         n = fromIntegral $ length rs
