@@ -1,9 +1,10 @@
-module HillClimbingSolver where
+module HillClimbingSolvers where
 
-import CNFTypes
+import CNFTypes    
 
-neighbours :: Solution -> [Solution]
-neighbours (S xs) = [flipNthValue (S xs) i | i <- [0..n]]
+-- Shared Helper Functions
+neighbours :: Solution -> [Solution] -- Neighbours includes original solution
+neighbours (S xs) = (S xs):[flipNthValue (S xs) i | i <- [0..n]]
                         where n = length xs - 1
 flipNthValue :: Solution -> Int -> Solution
 flipNthValue (S xs) n = S $ take n xs ++ [flipVar (xs!!n)] ++ drop (n + 1) xs
