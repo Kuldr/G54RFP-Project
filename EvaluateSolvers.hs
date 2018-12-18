@@ -38,3 +38,23 @@ averageResult rs = (trueTotal/n, falseTotal/n, randomTotal/n)
                         falseTotal  = fromIntegral $ sum [(\(_,x,_) -> x) x | x <- rs]
                         randomTotal = fromIntegral $ sum [(\(_,_,x) -> x) x | x <- rs]
                         n = fromIntegral $ length rs
+
+displayTable :: Int -> Int -> Int -> Int -> IO ()
+displayTable v c r t =
+    do
+        -- Display the header rows
+        let l1 = "Problem   | v = " ++ show v ++ ", c = " ++ show c ++ ", r = " ++ show r
+        let l2 = " Average over " ++ show t ++ " runs"
+        let l3 = "          |"
+        putStrLn $ l1
+        putStrLn $ l2
+        putStrLn $ "----------|" ++ replicate (max (length l1) (length l2) - (length l3-1)) '-'
+
+        -- Solve and get the average
+        results <- solveMultiple 3 5 2 5
+        let averageResults = averageResult results
+
+        -- Display the results
+        putStrLn $ "All True  | " ++ show ((\(x,_,_) -> x) averageResults)
+        putStrLn $ "All False | " ++ show ((\(_,x,_) -> x) averageResults)
+        putStrLn $ "Random    | " ++ show ((\(_,_,x) -> x) averageResults)
