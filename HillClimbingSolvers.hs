@@ -1,6 +1,34 @@
 module HillClimbingSolvers where
 
+import Data.List
+import Data.Ord
 import CNFTypes
+import NaiveSolvers
+import CNFEvaluator
+
+-- Steepest Ascent
+--  Evaluate all and then choose best
+-- Set up the steepest ascent hill climb
+--      This is the function to call at the begining
+setUpSAHC :: Problem -> Int -> Int -> IO Solution
+setUpSAHC p v t =
+    do
+        startingSolution <- randomSolution v -- Starts with random solution
+        return $ steepestAscentHillClimb p startingSolution t
+-- Main Loop
+steepestAscentHillClimb :: Problem -> Solution -> Int -> Solution
+steepestAscentHillClimb p s 0 = s
+steepestAscentHillClimb p s t =
+    if next == s then s
+        else steepestAscentHillClimb p next (t-1)
+            where next = steepestAscentHillClimbStep p s
+-- Single step of hill climb
+steepestAscentHillClimbStep :: Problem -> Solution -> Solution
+steepestAscentHillClimbStep p s = best $ evalutateAllNeighbours p s
+evalutateAllNeighbours :: Problem -> Solution -> [(Int, Solution)]
+evalutateAllNeighbours p s = [(evaluateProblem p n, n) | n <- neighbours s]
+best :: [(Int, Solution)] -> Solution
+best xs = snd $ (sortBy (flip $ comparing fst) xs) !! 0
 
 -- Shared Helper Functions
 neighbours :: Solution -> [Solution] -- Neighbours includes original solution
