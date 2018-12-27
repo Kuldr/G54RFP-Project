@@ -53,6 +53,10 @@ bitFlipMutation (S xs) n = do
     ans <- bitFlipMutation mutation (n-1)
     return $ ans
 
+weakestReplacements :: [(Int, Solution)] -> [(Int, Solution)] -> [(Int, Solution)]
+weakestReplacements ps [] = ps
+weakestReplacements ps (c:cs) = weakestReplacements newps cs
+                                    where newps = weakestReplacement ps c
 weakestReplacement :: [(Int, Solution)] -> (Int, Solution) -> [(Int, Solution)]
 weakestReplacement ps c = c:(drop 1 $ sortBy (comparing fst) ps)
 
