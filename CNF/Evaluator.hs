@@ -1,6 +1,6 @@
-module CNFEvaluator where
+module CNF.Evaluator where
 
-import CNFTypes
+import CNF.Types
 
 -- Evaluator
 evaluateProblem :: Problem -> Solution -> Int

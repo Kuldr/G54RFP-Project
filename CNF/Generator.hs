@@ -1,8 +1,8 @@
-module CNFGenerator where
+module CNF.Generator where
 
 import System.Random
 import Control.Monad
-import CNFTypes
+import CNF.Types
 
 -- Generator
 -- v is the number of variables to include in the problem

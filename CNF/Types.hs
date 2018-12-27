@@ -1,4 +1,4 @@
-module CNFTypes where
+module CNF.Types where
 
 -- Types
 --     A Boolean Problem in CNF is a series of clauses which are AND'd together
