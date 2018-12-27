@@ -73,7 +73,6 @@ stochasticHC :: Problem -> Solution -> Int -> IO Solution
 stochasticHC p s 0 = return s
 stochasticHC p s m =
     do
-        putStrLn $ show m --DEBUG
         nextSolution <- stochasticPickNeighbour p s (neighbours s)
         if nextSolution == s then return s
             else do
