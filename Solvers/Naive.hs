@@ -1,8 +1,8 @@
-module NaiveSolvers where
+module Solvers.Naive where
 
 import System.Random
 import Control.Monad
-import CNFTypes
+import CNF.Types
 
 allTrueSolution :: Int -> Solution
 allTrueSolution v = S [(i, True) | i <- [1..v]]
