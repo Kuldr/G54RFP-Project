@@ -1,4 +1,4 @@
-module Solver.HillClimbing where
+module Solvers.HillClimbing where
 
 import Data.List
 import Data.Ord
