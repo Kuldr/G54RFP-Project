@@ -1,8 +1,9 @@
 module EvaluateSolvers where
 
-import CNFGenerator
-import CNFEvaluator
-import NaiveSolvers
+import CNF.Generator
+import CNF.Evaluator
+import Solvers.Naive
+import Solvers.HillClimbing
 
 generateAndEvaluate :: Int -> Int -> Int -> IO (Int, Int, Int)
 generateAndEvaluate v c r =
