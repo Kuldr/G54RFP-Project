@@ -59,6 +59,39 @@ simpleHC p s m =
         else simpleHC p next (m-1)
             where next = head $ (uphillNeighbours p s) ++ [s]
 
+-- Stochastic Hill Climb
+--      Randomly choose a neighbour and if they improve select them
+-- Setup the solver with problem p with v variables and m max steps to take
+--      Can finish early is it can't find an improving solution
+setUpStochastic :: Problem -> Int -> Int -> IO Solution
+setUpStochastic p v t =
+    do
+        startingSolution <- randomSolution v -- Starts with random solution
+        answer <- stochasticHC p startingSolution t
+        return $ answer
+stochasticHC :: Problem -> Solution -> Int -> IO Solution
+stochasticHC p s 0 = return s
+stochasticHC p s m =
+    do
+        putStrLn $ show m --DEBUG
+        nextSolution <- stochasticPickNeighbour p s (neighbours s)
+        if nextSolution == s then return s
+            else do
+                answer <- stochasticHC p nextSolution (m-1)
+                return $ answer
+-- Randomly test if a neighbour is better than the current solution
+--      If all neighbours don't improve return original solution
+stochasticPickNeighbour :: Problem -> Solution -> [Solution] -> IO Solution
+stochasticPickNeighbour p s [] = do return s
+stochasticPickNeighbour p s ns =
+    do
+        randomIndex <- randomRIO (0, (length ns - 1))
+        let n = ns!!randomIndex
+        let remainingNeighbours = take randomIndex ns ++ drop (randomIndex+1) ns
+        if evaluateProblem p n > evaluateProblem p s
+            then return $ n
+            else stochasticPickNeighbour p s remainingNeighbours
+
 -- OTHER HILL CLIMBING MAY IMPLEMENT
 --Stochastic
 --  Select Random neighbour and evaluate
