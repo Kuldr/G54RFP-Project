@@ -9,8 +9,8 @@ import Solvers.Naive
 
 
 -- Shared Helper Functions
-neighbours :: Solution -> [Solution] -- Neighbours includes original solution
-neighbours (S xs) = (S xs):[flipNthValue (S xs) i | i <- [0..n]]
+neighbours :: Solution -> [Solution]
+neighbours (S xs) = [flipNthValue (S xs) i | i <- [0..n]]
                         where n = length xs - 1
 flipNthValue :: Solution -> Int -> Solution
 flipNthValue (S xs) n = S $ take n xs ++ [flipVar (xs!!n)] ++ drop (n + 1) xs
@@ -41,7 +41,7 @@ steepestAscentHillClimb p s t =
             where next = steepestAscentHillClimbStep p s
 -- Single step of hill climb
 steepestAscentHillClimbStep :: Problem -> Solution -> Solution
-steepestAscentHillClimbStep p s = best $ evalutateAllNeighbours p s
+steepestAscentHillClimbStep p s = best $ (evaluateProblem p s, s):(evalutateAllNeighbours p s)
 evalutateAllNeighbours :: Problem -> Solution -> [(Int, Solution)]
 evalutateAllNeighbours p s = [(evaluateProblem p n, n) | n <- neighbours s]
 best :: [(Int, Solution)] -> Solution
