@@ -1,5 +1,7 @@
 module Solvers.GeneticAlgorithm where
 
+import Data.List
+import Data.Ord
 import Control.Monad
 import System.Random
 import Solvers.Naive
@@ -15,7 +17,7 @@ import CNF.Evaluator
         -- Select Parents
         -- Crossover
         -- Mutation -- Small chance of changing
-        -- Selection of new children
+        -- Replacement
 
 initialisePopulation :: Int -> Int -> IO [Solution]
 initialisePopulation i v = do
@@ -46,6 +48,9 @@ bitFlipMutation (S xs) n = do
     ans <- bitFlipMutation mutation (n-1)
     return $ ans
 
+weakestReplacement :: [(Int, Solution)] -> (Int, Solution) -> [(Int, Solution)]
+weakestReplacement ps c = c:(drop 1 $ sortBy (comparing fst) ps)
+
 -- Other Crossover methods
 --      Single Point Crossover
 --      K Point Crossover
@@ -54,3 +59,8 @@ bitFlipMutation (S xs) n = do
 -- Other Mutation methods
 --      Bit String Mutation (1/l chance of flipping per bit)
 --      Swap 2 Bits
+
+-- Other Replacement methods
+--      Take new children as the new population (requires the same amount of children)
+--      Take n fittest out of parents and children
+--      Random Replacement
