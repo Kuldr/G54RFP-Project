@@ -27,6 +27,11 @@ initialisePopulation i v = do
 evaluatePopulation :: Problem -> [Solution] -> [(Int, Solution)]
 evaluatePopulation p ss = map (\s -> (evaluateProblem p s, s)) ss
 
+stochasticSelection :: [(Int, Solution)] -> IO Solution
+stochasticSelection is = do
+    randomIndex <- randomRIO (0, (length is - 1))
+    return $ snd $ is!!randomIndex
+
 uniformCrossover :: Solution -> Solution -> IO Solution
 uniformCrossover (S ms) (S ds) = do
     ans <- uniformHelper ms ds
@@ -50,6 +55,11 @@ bitFlipMutation (S xs) n = do
 
 weakestReplacement :: [(Int, Solution)] -> (Int, Solution) -> [(Int, Solution)]
 weakestReplacement ps c = c:(drop 1 $ sortBy (comparing fst) ps)
+
+-- Other Selection methods
+--      Tournament Selection
+--      Roulette Wheel Selection
+--      Truncation Selection
 
 -- Other Crossover methods
 --      Single Point Crossover
