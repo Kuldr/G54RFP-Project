@@ -1,12 +1,10 @@
 module Solvers.HillClimbing where
 
-import Data.List
-import Data.Ord
 import System.Random
 import CNF.Types
 import CNF.Evaluator
 import Solvers.Naive
-
+import Solvers.Common
 
 -- Shared Helper Functions
 -- Generating list of neighbouring solutions
@@ -15,15 +13,9 @@ neighbours (S xs) = [flipNthValue (S xs) i | i <- [0..n]]
                         where n = length xs - 1
 uphillNeighbours :: Problem -> Solution -> [Solution]
 uphillNeighbours p s = filter (\n -> evaluateProblem p n > evaluateProblem p s ) $ neighbours s
-flipNthValue :: Solution -> Int -> Solution
-flipNthValue (S xs) n = S $ take n xs ++ [flipVar (xs!!n)] ++ drop (n + 1) xs
-flipVar :: (Int, Bool) -> (Int, Bool)
-flipVar (i,b) = (i, not b)
 -- Evaluating neighbouring solutions
 evalutateAllNeighbours :: Problem -> Solution -> [(Int, Solution)]
 evalutateAllNeighbours p s = [(evaluateProblem p n, n) | n <- neighbours s]
-best :: [(Int, Solution)] -> Solution
-best xs = snd $ (sortBy (flip $ comparing fst) xs) !! 0
 
 -- Steepest Ascent Hill Climb
 --      Evaluate all neighbours and then choose the one that makes the most progress

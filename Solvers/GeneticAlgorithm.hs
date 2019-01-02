@@ -5,7 +5,7 @@ import Data.Ord
 import Control.Monad
 import System.Random
 import Solvers.Naive
-import Solvers.HillClimbing
+import Solvers.Common
 import CNF.Types
 import CNF.Evaluator
 
