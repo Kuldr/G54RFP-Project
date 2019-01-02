@@ -9,15 +9,38 @@ import Solvers.HillClimbing
 import CNF.Types
 import CNF.Evaluator
 
--- geneticAlgorithm = do
-    -- Initial Population
+geneticAlgorithm :: Int -> Int -> Problem -> Int -> IO Solution
+geneticAlgorithm i v p g = do
+    -- Initialise Population
+    pop <- initialisePopulation i v
     -- Evaluate Population
-    -- Loop on termination criteria returning best
-        -- Loop on children to gen
-        -- Select Parents
-        -- Crossover
-        -- Mutation -- Small chance of changing
-        -- Replacement
+    let evalPop = evaluatePopulation p pop
+    -- Loop for g generations returning best
+    best <- gaLoop evalPop g p
+    return $ best
+gaLoop :: [(Int, Solution)] -> Int -> Problem -> IO Solution
+gaLoop ps 0 _ = do return $ best ps
+gaLoop ps g p = do
+    -- This method creates 1/4 pop as children
+    cs <- replicateM ((length ps) `div` 4) (createChild ps p)
+    -- Replacement
+    let newps = weakestReplacements ps cs
+    ans <- gaLoop newps (g-1) p
+    return ans
+createChild :: [(Int, Solution)] -> Problem -> IO (Int, Solution)
+createChild ps p = do
+    -- Select Parents, could select same parents
+    p1 <- stochasticSelection ps
+    p2 <- stochasticSelection ps
+    -- Crossover
+    c <- uniformCrossover p1 p2
+    -- Mutation
+    randomChance <- randomRIO (0.0,1.0) :: IO Double
+    if randomChance < 0.1 -- 10% chance
+        then do
+                m <- bitFlipMutation c 1
+                return $ (evaluateProblem p m, m)
+        else return $ (evaluateProblem p c, c)
 
 initialisePopulation :: Int -> Int -> IO [Solution]
 initialisePopulation i v = do
