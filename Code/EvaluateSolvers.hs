@@ -15,11 +15,13 @@ generateAndEvaluate v c r =
         let allTrue = allTrueSolution v
         let allFalse = allFalseSolution v
         random <- randomSolution v
+        sahc <- setUpSAHC problem v 1000 -- 1000 itterations
 
         -- Evaluate the solutions
         let allTrueResult = evaluateProblem problem allTrue
         let allFalseResult = evaluateProblem problem allFalse
         let randomResult = evaluateProblem problem random
+        let sahcResult = evaluateProblem problem sahc
 
         -- Return results
         return (allTrueResult, allFalseResult, randomResult)
@@ -60,3 +62,10 @@ displayTable v c r t =
         putStrLn $ "All False | " ++ show ((\(_,x,_) -> x) averageResults)
         putStrLn $ "Random    | " ++ show ((\(_,_,x) -> x) averageResults)
         putStrLn ""
+
+main =
+    do
+        putStrLn ""
+      --displayTable v c r t
+        displayTable 3 5 2 5
+        displayTable 120 600 5 1000
