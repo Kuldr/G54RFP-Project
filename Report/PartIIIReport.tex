@@ -45,18 +45,44 @@ This could effectively translated into a functional programming setting.
 I thought it would be interesting to try and reimplement these some of these methods in Haskell to see the benefits of the FP paradigm to these AI methods.
 
 \subsection{Technical Background}
-%TODO MORE HERE
-% Make the report reasonably self-contained
 \subsubsection{MAX-SAT}
 MAX-SAT is an optimisation problem which is NP-Hard.
-Given a logic formula in conjunctive normal form, the aim is to maximise the number of clauses which are true.
-To do this variables in the formula must be given a boolean value so that the formula can be evaluated, giving a score based upon how many clauses are true.
+Given a logic formula in conjunctive normal form, the aim is to maximise the number of clauses which are true after variable assignment.
+A logical problem in conjunctive normal form has the following formal grammar.
+\begin{lstlisting}
+CNF -> (C) | (C) & CNF      L -> V | !V
+C   -> L   | L + C          V -> 1 | 2 | 3 | ...
+\end{lstlisting}
+\paragraph{CNF Formula}\vspace*{-6mm}
+A CNF formula is made up of clauses which are logically and'd together.
+If each clause in a CNF problem is true then the whole formula will return true.
+Although in MAX-SAT we aren't aiming for all clauses to be true only to maximise the number that are true.
+\paragraph{Clauses C}\vspace*{-4mm}
+Each clause contains a series of literals, which are logically or'd together.
+This means so long as any literal can evaluate to true the whole clause will be true.
+\paragraph{Literals L}\vspace*{-4mm}
+A literal is a variable which is either positive or negative, this is achieved by applying a logical not or not doing so.
+\paragraph{Variables V}\vspace*{-4mm}
+Finally each literal is assigned a variable which are later used to evaluate a solution.
+There can be any number of variables so integers are used here in this example to represent the different variables.
+\paragraph{Solution for CNF}
+A solution for CNF will involve all of the variables in the problem being given a boolean value.
+From here you can evaluate each clause and then find how many clauses evaluate to true.
+One benefit of how this problem works is that any solution (granting that all variables required have an assignment) will be a valid solution to the problem.
 
-\subsubsection{Hill Climbing Algorithms}
-Hill Climbing algorithms efficiently explore the search space by incrementally change
-
-\subsubsection{Genetic Algorithms}
-
+\subsubsection{Mathematical Optimisation}
+The MAX-SAT problem is a form of optimisation problem that can be solved by a optimisation technique.
+An optimisation problem means that there is an objective function that you wish to maximise the value of by changing the input.
+In the case of MAX-SAT the objective function is the number of clauses that evaluate to true given our solution as input.
+The goal of any optimisation problem is to find the solution that gives the best possible value for the objective function.
+\par
+In MAX-SAT there may be several optimal solutions and it is hard to calculate if you do have an optimal solution.
+Apart from the trivial case of all clauses being true there is no guarantee that an optimal solution has been found, there is also no guarantee that all clauses can be true either.
+\par
+While you could devise a way to generate all possible solutions and evaluate them all to find the optimal, due to the NP-hardness of this problem this method will take none polynomial time to run which is very inefficient.
+The field of mathematical optimisation aims to find techniques to more efficiently find optimal or near optimal solutions to these types of problems.
+While the techniques used for this project don't guarantee optimal solutions the achieve near optimal solutions that have been shown to produce solutions very close to the true optimum.
+Although MAX-SAT doesn't have any immediately obvious applications it is very similar to problems such as scheduling where near optimal solutions may be sufficient so the application of these algorithms have real world importance.
 
 \subsection{Aims of the Project}
 The original coursework took place over several lab sessions, incorporating a variety of topics and theoretical questions, as well as originally relying heavily of a java based framework.
@@ -72,11 +98,27 @@ Here is what I intend to create in this project:\vspace*{-4mm}
         \item Genetic Algorithm Solver
     \end{itemize}
 \end{multicols}
+While creating this components, real world functional programming techniques will be applied to make this work efficient and maintainable.
 
-\section{What I did --- Needs another name}
-Discussion of the implementation, justifying key decisions and highlighting
-and explaining particularly interesting aspects, illustrating with
-excerpts from the developed code where appropriate.
+\section{Implementaion}
+% Discussion of the implementation, justifying key decisions and highlighting and explaining particularly interesting aspects, illustrating with excerpts from the developed code where appropriate.
+In this section the implementation of each component will be discussed including any key decisions and interesting aspects.
+\subsection{MAX-SAT problem generator}
+In the java framework there was the ability to generate a MAX-SAT problem in a suitable form, before any solvers could exist this component and decisions of how the problem will appear also had to be made.
+
+% While the number of clauses and literals can be infinite we bound them
+% While each clause can have a different number of literals we keep them the same
+
+
+
+
+\subsection{MAX-SAT evaluator}
+\subsection{Naive solvers}
+\subsection{Hill Climbing solvers}
+\subsection{Genetic Algorithm Solver}
+
+
+
 
 % Implementaion
 The MAX-SAT problems were generated by a framework given in the original courseworks, this was via a java file that could be imported.
