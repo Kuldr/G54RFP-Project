@@ -44,6 +44,22 @@ Many of the methods implemented involved combining smaller functions together to
 This could effectively translated into a functional programming setting.
 I thought it would be interesting to try and reimplement these some of these methods in Haskell to see the benefits of the FP paradigm to these AI methods.
 
+\subsection{Aims of the Project}
+The original coursework took place over several lab sessions, incorporating a variety of topics and theoretical questions, as well as originally relying heavily of a java based framework.
+Due to this only part of the lab exercises will be looked into and some parts of the java framework will have to be remade in Haskell.
+\par
+Here is what I intend to create in this project:\vspace*{-4mm}
+\begin{multicols}{3}
+    \begin{itemize}[noitemsep,nolistsep]
+        \item MAX-SAT problem generator
+        \item MAX-SAT evaluator
+        \item Naive solvers
+        \item Hill Climbing solvers
+        \item Genetic Algorithm Solver
+    \end{itemize}
+\end{multicols}\vspace*{-3mm}
+While creating this components, real world functional programming techniques will be applied to make this work efficient and maintainable.
+
 \subsection{Technical Background}
 \subsubsection{MAX-SAT}
 MAX-SAT is an optimisation problem which is NP-Hard.
@@ -84,33 +100,37 @@ The field of mathematical optimisation aims to find techniques to more efficient
 While the techniques used for this project don't guarantee optimal solutions the achieve near optimal solutions that have been shown to produce solutions very close to the true optimum.
 Although MAX-SAT doesn't have any immediately obvious applications it is very similar to problems such as scheduling where near optimal solutions may be sufficient so the application of these algorithms have real world importance.
 
-\subsection{Aims of the Project}
-The original coursework took place over several lab sessions, incorporating a variety of topics and theoretical questions, as well as originally relying heavily of a java based framework.
-Due to this only part of the lab exercises will be looked into and some parts of the java framework will have to be remade in Haskell.
-\par
-Here is what I intend to create in this project:\vspace*{-4mm}
-\begin{multicols}{3}
-    \begin{itemize}[noitemsep,nolistsep]
-        \item MAX-SAT problem generator
-        \item MAX-SAT evaluator
-        \item Naive solvers
-        \item Hill Climbing solvers
-        \item Genetic Algorithm Solver
-    \end{itemize}
-\end{multicols}
-While creating this components, real world functional programming techniques will be applied to make this work efficient and maintainable.
-
 \section{Implementaion}
 % Discussion of the implementation, justifying key decisions and highlighting and explaining particularly interesting aspects, illustrating with excerpts from the developed code where appropriate.
 In this section the implementation of each component will be discussed including any key decisions and interesting aspects.
+
+\subsection{Code Structure}
+The code for this project is split in to 3 main modules CNF, Solvers, and Tests.
+The idea with this is it separates the code up based upon function and allows the modules to be shared easily depending on what part a user wants.
+This was also a massive benefit when programming as it was clear what functionality each submodule provided making debugging easier.
+Splitting everything up also allowed for a high level of code reuse throughout the project.
+\par
+These features of the Haskell programming language, while not functional and seen in other none functional languages, allow for Haskell to be used like other popular languages used in industry.
+
 \subsection{MAX-SAT problem generator}
 In the java framework there was the ability to generate a MAX-SAT problem in a suitable form, before any solvers could exist this component and decisions of how the problem will appear also had to be made.
-
-% While the number of clauses and literals can be infinite we bound them
-% While each clause can have a different number of literals we keep them the same
-
-
-
+\subsubsection{Creating new types}
+To help define the problem more succinctly new types and data were created in the type system, by the code below.
+These types are very similar to the formation of the grammar presented in section 1.3.1 and thus was very simple to implement in Haskell from the grammar.
+All of the types also derived show so that it could be used to print out the problems to console.
+\lstinputlisting[language=Haskell, firstline=2, lastline=5]{reportIIICode.hs}
+\subsubsection{Problem Generation}
+While in theory a CNF problem can have clauses of differing sizes, it was chosen to make all the clauses contain the same number of literals.
+This restriction means that the generator creates a MAX-kSAT where each clause has exactly k literals.
+It should be noted that this restriction only applies to the generation of the problem and isn't used by the solvers meaning that the solvers will work on any MAX-SAT problem not just MAX-kSAT\@.
+\par
+This allows any MAX-kSAT to be defined by 3 values, v the number of variables, c the number of clauses, and r the number of variables per clause.
+From there it was simple to create a series of functions that would generate a problem, which can be found in the CNF.Generator module.
+\par
+The implementation is broken into the generation of a problem, clause, literal and variable.
+For an individual variable a random number is picked between 0 and the number of variables in the problem, it is then used in the literal generation by randomly choosing if it will be negated.
+For the problem and clause generation a list of the desired size is created by using replicateM.
+As randomness is used this means that the problem generated has to be wrapped up in the IO monad.
 
 \subsection{MAX-SAT evaluator}
 \subsection{Naive solvers}

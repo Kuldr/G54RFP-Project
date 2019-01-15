@@ -18,8 +18,8 @@ generateClause v r = do
                         return $ C literals
 generateLiteral :: Int -> IO Literal
 generateLiteral v = do
-                        randomBool <- randomRIO (True, False)
                         variable   <- generateVariable v
+                        randomBool <- randomRIO (True, False)
                         if randomBool then return $ Positive variable
                                       else return $ Negative variable
 generateVariable :: Int -> IO Var
