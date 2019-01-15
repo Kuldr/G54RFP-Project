@@ -4,4 +4,6 @@ newtype Clause  = C [Literal]
 data    Literal = Positive Var | Negative Var
 newtype Var     = V Int
 
-newtype Solution = S [(Int, Bool)]
+--2.3
+newtype Solution = S [(Int, Bool)] deriving (Show, Eq)
+evaluateProblem :: Problem -> Solution -> Int
