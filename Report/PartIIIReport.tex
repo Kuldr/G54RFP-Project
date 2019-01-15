@@ -143,6 +143,19 @@ This is quite trivial to then implement with list comprehensions and pattern mat
 A full implementation can be found in the CNF.Evaluator module.
 
 \subsection{Naive solvers}
+3 naive solvers are grouped together in the Solvers.Naive module.
+These were created to allow for a quick way to check if the generator/evaluator was working correctly but also served as a comparison point for the other algorithms.
+One thing all of these solvers have in common is that they don't take the problem into account when creating the solution just the number of variables needed for it to be valid.
+\subsubsection{All True/False}
+The most basic of ways to create a valid solution is to make all the variables true or false, which is what these 2 functions did.
+While these solutions are valid they often don't produce good results.
+\lstinputlisting[language=Haskell, firstline=12, lastline=14]{reportIIICode.hs}
+
+\subsubsection{Random Solution}
+The other naive way to create a valid solution is to randomly assign boolean values to variables.
+This produces an answer which is valid but again not very good, but it does provide a good starting point for the other methods to iterate from.
+\lstinputlisting[language=Haskell, firstline=17, lastline=19]{reportIIICode.hs}
+
 \subsection{Hill Climbing solvers}
 \subsection{Genetic Algorithm Solver}
 
