@@ -12,9 +12,9 @@
 \graphicspath{ {images/} }
 \renewcommand{\familydefault}{\sfdefault}
 
-\title{COMP4075/G54RFP Coursework Part III}
-\date{16\textsuperscript{th} January 2019}
-\author{Benjamin Charlton --- psybc3 --- 4262648}
+\title{COMP4075/G54RFP Coursework Part III\vspace{-6mm}}
+\date{\vspace{-3mm}16\textsuperscript{th} January 2019}
+\author{Benjamin Charlton --- psybc3 --- 4262648\vspace{-8mm}}
 
 \usepackage{fancyhdr}
 
@@ -34,6 +34,7 @@
 %   making clear what was from scratch - IE all of it
 
 \maketitle
+\vspace{-12mm}
 
 \section{Project Overview}
 \subsection{Motivation}
@@ -196,18 +197,73 @@ The flipNthValue can be found in Solvers.Common module as it was helpful to be a
 
 \subsection{Genetic Algorithm Solver}
 Genetic algorithms are a population based search method, meaning that a collection of solutions are used together to search for a better solution.
+% TODO: Explain more
 
 \subsubsection{General Structure}
 Although long the general structure of the GA is rather simple so it can be seen here.
-\lstinputlisting[language=Haskell, firstline=27, lastline=43]{reportIIICode.hs}
+\lstinputlisting[language=Haskell, firstline=27]{reportIIICode.hs}
 It is broken into 3 major parts, Initialisation, Main Loop, Child Generation.
+This a typical structure of a GA and once this was written out it was trivial to determine the type signatures required to allow this to be chained together.
 
+\paragraph{Initialisation}\vspace*{-4mm}
+Initialisation simply made a list of random solutions and then evaluated the entire population by mapping the evaluation function across the list.
+\paragraph{Selection}\vspace*{-4mm}
+Selection was done stochastically for simplicity.
+There are other better known methods but they require more computation.
+Stochastic selection proves to be suitable enough for a proof of concept.
+\paragraph{Crossover}\vspace*{-4mm}
+Uniform crossover was used where each child takes roughly 50\% of the genes from each parent.
+This is similar to crossover methods in nature and is easily applicable here as any crossover still gives a valid solution.
+\paragraph{Mutation}\vspace*{-4mm}
+For mutation a random variable in the child solution is negated, using the same bit flip functions used for hill climbing.
+\paragraph{Replacement}\vspace*{-4mm}
+Replacement takes the weakest members of the old population and replaces them with the new children.
 
-\section{Learnt stuff --- Needs another name}
-A section reflecting upon what was learned from the project and your
-thoughts around the project topic from a real-world programming perspective.
+\section{Conclusions}
+While implementing these optimisation methods in Haskell, several functional programming techniques where tried.
+Some of these succeeded and others failed, this section aims to discuss the pros and cons of using a functional language to implement optimisation techniques.
 
-% replicateM
-% typing
+\subsection{Parallelism}
+I attempted to use the Control.Monad.Parallel module to add parallelism to the project as many parts of a GA such as child generation can happen in parallel.
+Using this package provided a simple way to achieve parallelism across the computation which is rather shocking compared to other languages like python where this can be rather tricky.
+This is a big plus for using functional languages as it is easy for a compiler to make these adjustments and add large optimisations like parallelism.
+\par
+Unfortunately in this implementation run times were roughly N times longer than single threaded performance for any N numbers of cores.
+This can be attributed to the fact that the computation in tasks like generating a child were very small compared to the added overhead of context switching in parallelism.
+While it can be easy to then say that this isn't helpful, due to the simplicity of adding parallelism, it can be tested easily and in harder problems this addition would be very beneficial.
+
+\subsection{Typing and Monads}
+A feature of strict typing that would have been helpful was being able to us interchangeable functions so long as they had the same type.
+This would be beneficial in the creation of a GA where you are piecing together small functions like mutation method and replacement.
+As any crossover method would have the type Solution -> Solution it would be easy to create many crossover methods and try them all.
+Unfortunately this wasn't possible as some of these methods involved randomness and others didn't meaning some results where in an IO monad.
+\par
+This was a big downside of using a strictly typed functional language like Haskell with optimisation methods that rely heavily on randomness to explore the search space.
+These random computations had to be wrapped up in an IO monad made some parts trickier than if they weren't in the monad.
+\par
+Technically speaking the pure functions could be also wrapped in an IO monad arbitrarily to create type compatibility but this solution seems like a hack that is hiding information from the programmer.
+\par
+While the type system was often helpful, when dealing with randomness it feels like a hinderance making much of the code more complicated than it requires.
+
+\subsection{Inherently Procedural Code}
+Due to a mix of how GAs work and the use of monadic code, the end result of the GA was more procedural in style than functional.
+This is very hard to get rid of an ultimately means that a lot of the benefits of Haskell aren't being exploited.
+\par
+This shows that in some cases the functional style (although useable) may not be the best choice for implementing an algorithm.
+
+\subsection{Performance and Maintainability}
+The performance of all the implementations was as expected with relatively quick run times, although no formal testing was done.
+This shows how functional languages can perform as well as other implementations while providing benefits in the code structure, readability and maintainability.
+\par
+During development changes were easy to make and keep track of what was going on.
+There was also rarely any bugs so long as the program compiled, showing that a functional language should be considered when starting a project.
+At any given time it was easy to be confident that the code was running efficiently and correctly which is a large benefit compared to other languages.
+
+\subsection{Closing Remarks}
+While some aspects of the project were difficult due to Haskell others were quick and simple to implement.
+The confidence boost from be sure the code is correct is very helpful when creating the code.
+Adapting this code for use on another problem would also be very simple compared to other languages, which could be helpful in industry.
+\par
+Overall this project was a joy to work on and a nice insight into the world of AI using functional languages.
 
 \end{document}
