@@ -146,6 +146,7 @@ A full implementation can be found in the CNF.Evaluator module.
 3 naive solvers are grouped together in the Solvers.Naive module.
 These were created to allow for a quick way to check if the generator/evaluator was working correctly but also served as a comparison point for the other algorithms.
 One thing all of these solvers have in common is that they don't take the problem into account when creating the solution just the number of variables needed for it to be valid.
+These can all be found in the Solvers.Naive module.
 \subsubsection{All True/False}
 The most basic of ways to create a valid solution is to make all the variables true or false, which is what these 2 functions did.
 While these solutions are valid they often don't produce good results.
@@ -157,10 +158,56 @@ This produces an answer which is valid but again not very good, but it does prov
 \lstinputlisting[language=Haskell, firstline=17, lastline=19]{reportIIICode.hs}
 
 \subsection{Hill Climbing Solvers}
+The hill climbing solvers can be found in the Solvers.HillClimbing module.
+Hill Climbing algorithms come from a set of local search algorithms, where at any step in the search process you look and neighbours (points in solution space nearby the current solution) to determine your next step.
+A downside of these algorithms is that they are extremely susceptible to local maxima, although this doesn't make a large difference in this problem as the local maxima are objectively close to the global maximum.
+\par
+Hill Climbing algorithms are known as anytime algorithms as they can be forcibly stopped at any time and the current best known solution will be a valid solution.
+All of the implementations of hill climbing also exploit the fact that if at any step a better solution can't be found, the algorithm has reached a local maxima and will return that solution.
+This allowed for early termination, on average quicker run times.
+Most helpful part of this was during testing the loop duration could be set arbitrary large and the function will return much earlier than expected.
+\subsubsection{Set Up Function}
+All of the hill climbing algorithms are split into 2 steps, a setup function and a recursive looping function.
+The set up function works similarly for every hill climbing algorithm by first creating a random solution as a starting point (from Solvers.Naive) and then calling the hill climbing loop.
+A random starting point is used as it has been shown that this is a a simple and effective way to get good results in local search algorithms.
+\subsubsection{Implemented Stratergies}
+Three different strategies for hill climbing were implemented.
+Each one used a list of neighbours generated (explained in the next section) to determine what the next step should be.
+All of these functions can be found in the Solvers.HillClimbing module.
+In the following paragraphs the strategy for which neighbour to pick is explained.
+\paragraph{Steepest Ascent}\vspace*{-4mm}
+This method takes the neighbour that increases the objective value the most.
+This is achieved by simply sorting the list of neighbours and their score and taking the highest scoring neighbour.
+
+\paragraph{Simple}\vspace*{-4mm}
+This method evaluates all the neighbours similar to steepest ascent but rather than sorting the neighbours to find the best it takes the first improving neighbour.
+This can potentially allow for greater exploration of the search space than steepest ascent.
+
+\paragraph{Stochastic Hill Climbing}\vspace*{-4mm}
+This method randomly chooses which neighbour will be the next solution.
+To ensure that it improves over time only neighbours that improve are actually selected and others are discarded.
+This allows for greater exploration than simple hill climbing and has the benefit that on average less solutions have to be evaluated before picking a new solution.
+
+\subsubsection{Neighbours}
+A neighbouring solution was defined by any solution that had a single variable flipped from the current solution.
+This meant it was simple to systematically create a list of neighbours using list comprehension.
+The flipNthValue can be found in Solvers.Common module as it was helpful to be accessed in other solvers.
+\lstinputlisting[language=Haskell, firstline=22, lastline=24]{reportIIICode.hs}
+
 \subsection{Genetic Algorithm Solver}
+Genetic algorithms are a population based search method, meaning that a collection of solutions are used together to search for a better solution.
+
+\subsubsection{General Structure}
+Although long the general structure of the GA is rather simple so it can be seen here.
+\lstinputlisting[language=Haskell, firstline=27, lastline=43]{reportIIICode.hs}
+It is broken into 3 major parts, Initialisation, Main Loop, Child Generation.
+
 
 \section{Learnt stuff --- Needs another name}
 A section reflecting upon what was learned from the project and your
 thoughts around the project topic from a real-world programming perspective.
+
+% replicateM
+% typing
 
 \end{document}

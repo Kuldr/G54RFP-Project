@@ -9,7 +9,7 @@ import Solvers.Common
 -- Shared Helper Functions
 -- Generating list of neighbouring solutions
 neighbours :: Solution -> [Solution]
-neighbours (S xs) = [flipNthValue (S xs) i | i <- [0..n]]
+neighbours s@(S xs) = [flipNthValue s i | i <- [0..n]]
                         where n = length xs - 1
 uphillNeighbours :: Problem -> Solution -> [Solution]
 uphillNeighbours p s = filter (\n -> evaluateProblem p n > evaluateProblem p s ) $ neighbours s
